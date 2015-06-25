@@ -8,31 +8,22 @@
 
 declare -A CHECK_SUMS
 
-TEMPDIR=$(mktemp -d dsktest.XXXX)
-
 echo "Creating $2 blocks of size $3..."
 for i in $(seq 1 $2)
 do
 	echo $i
-	BLOCKFILE=$(mktemp --tmpdir=$TEMPDIR block.$i.XXXX)
-	dd if=/dev/urandom of=$BLOCKFILE bs="$3" count=1
-	chmod 666 $BLOCKFILE
-	BASENAME=$(basename $BLOCKFILE)
-	TARGET_NAME="$1/$BASENAME"
-	touch $TARGET_NAME
-	chmod 666 $TARGET_NAME
-	CHECKSUM=$(cat $BLOCKFILE | tee $TARGET_NAME | md5sum | awk '{print $1}')
-	echo $BASENAME
-	echo "Block $i created in $TARGET_NAME with checksum $CHECKSUM"
-	CHECK_SUMS[$BASENAME]=$CHECKSUM
+	BLOCKFILE=$(mktemp --tmpdir="$1" block.$i.XXXX)
+	CHECKSUM=$(dd if=/dev/urandom bs="$3" count=1 | tee $BLOCKFILE | md5sum | awk '{print $1}')
+	echo "Block $i created in $BLOCKFILE with checksum $CHECKSUM"
+	CHECK_SUMS[$BLOCKFILE]=$CHECKSUM
 done
 
 PASSED=1
 echo "Checking checksums..."
-for BASENAME in "${!CHECK_SUMS[@]}"
+for FILENAME in "${!CHECK_SUMS[@]}"
 do 
-	EXPECTED_CHECKSUM=${CHECK_SUMS[$BASENAME]}
-	ACTUAL_CHECKSUM=$(md5sum "$1/$BASENAME" | awk '{print $1}')
+	EXPECTED_CHECKSUM=${CHECK_SUMS[$FILENAME]}
+	ACTUAL_CHECKSUM=$(md5sum "$FILENAME" | awk '{print $1}')
 	if [ $EXPECTED_CHECKSUM == $ACTUAL_CHECKSUM ]
 	then
 		echo "$BASENAME -- OK"
@@ -50,4 +41,3 @@ else
 	exit 3
 fi
 
-#rm -rf $TEMPDIR
