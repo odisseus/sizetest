@@ -11,4 +11,22 @@ The failed check does not necessarily mean that the reported capacity is false, 
 **WARNING**: This script may **CORRUPT DATA**, especially if the storage device declares false size. 
 It is best to use this script on an empty storage device.
 
+##Usage
+```bash
+dsktest.sh /directory/at/your/device <count-of-files> <file-size>
+```
+`count-of-files` -- number of random data files to write to directory. 
+
+`file-size` -- the size of each file. Same unit suffixes are supported as in the dd utility.
+
+Total amount of data should not exceed the amount of free space available on the file system as per its declaration.
+
+Example:
+```bash
+#Write 60 1GiB files to my 64 GB MicroSD card
+dsktest.sh /media/MICROSD_64_GB 60 1G
+```
+
+
+##Credits
 Inspired by description of RMPrepUSB tool found here: http://rmprepusb.blogspot.com/2013/10/a-faster-test-for-fake-sd-cards-and-usb.html
