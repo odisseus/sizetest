@@ -26,20 +26,11 @@ function check_checksums(){
 	echo $PASSED
 }
 
-function exit_if_checksum_mismatch(){
-	if [ $(check_checksums) == 1 ]
-	then
-		log_to_stderr "Check passed!"
-	else
-		log_to_stderr "Check failed!"
-		exit 3
-	fi
-}
-
 declare -A CHECK_SUMS
 
 log_to_stderr "Creating $2 blocks of size $3..."
 CHECK_STOP=1
+CHECK_FAILED=0
 for i in $(seq 1 $2)
 do
 	log_to_stderr $i
@@ -50,12 +41,33 @@ do
 	if [ $i -eq $CHECK_STOP ]
 	then
 		log_to_stderr "Checking checksums for the first $i blocks so far..."
-		exit_if_checksum_mismatch
+		if [ $(check_checksums) == 1 ]
+		then
+			log_to_stderr "Check passed!"
+		else
+			log_to_stderr "Check failed!"
+			CHECK_FAILED=1
+			break
+		fi
 		CHECK_STOP=$(( $CHECK_STOP * 2 ))
 	fi
 done
 
-log_to_stderr "Checking checksums..."
+log_to_stderr "Checking checksums after writing all the blocks..."
 
-exit_if_checksum_mismatch
+if [ $(check_checksums) == 1 ]
+then
+	log_to_stderr "Check passed!"
+else
+	log_to_stderr "Check failed!"
+	CHECK_FAILED=1
+fi
+
+log_to_stderr "Removing files..."
+for FILENAME in "${!CHECK_SUMS[@]}"
+do 
+	rm -f $FILENAME
+done
+
+exit($CHECK_FAILED)
 
