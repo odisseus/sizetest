@@ -29,4 +29,4 @@ dsktest.sh /media/MICROSD_64_GB 60 1G
 
 
 ##Credits
-Inspired by description of RMPrepUSB tool found here: http://rmprepusb.blogspot.com/2013/10/a-faster-test-for-fake-sd-cards-and-usb.html
+Inspired by description of FakeFlashTest tool found here: http://www.rmprepusb.com/tutorials/-fake-usb-flash-memory-drives
