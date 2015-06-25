@@ -10,3 +10,5 @@ The failed check does not necessarily mean that the reported capacity is false, 
 
 **WARNING**: This script may **CORRUPT DATA**, especially if the storage device declares false size. 
 It is best to use this script on an empty storage device.
+
+Inspired by description of RMPrepUSB tool found here: http://rmprepusb.blogspot.com/2013/10/a-faster-test-for-fake-sd-cards-and-usb.html
