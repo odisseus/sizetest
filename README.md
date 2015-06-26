@@ -5,7 +5,7 @@ It writes random data files to the file system and checks whether the checksums 
 If any file is corrupt, its checksum will almost certainly be wrong.
 
 If the storage device actually has less capacity than declared, and if the amount of written data exceeds the real capacity, 
-some of the dayta will necessarily get overwritten. This will cause checksum mismatches.
+some of the data will necessarily get overwritten. This will cause checksum mismatches.
 The failed check does not necessarily mean that the reported capacity is false, but it is a strong hint.
 
 **WARNING**: This script may **CORRUPT DATA**, especially if the storage device declares false size. 
