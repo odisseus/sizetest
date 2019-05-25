@@ -11,7 +11,7 @@ The failed check does not necessarily mean that the reported capacity is false, 
 **WARNING**: This script may **CORRUPT DATA**, especially if the storage device declares false size. 
 It is best to use this script on an empty storage device.
 
-##Usage
+## Usage
 ```bash
 dsktest.sh /directory/at/your/device <count-of-files> <file-size>
 ```
@@ -28,5 +28,5 @@ dsktest.sh /media/MICROSD_64_GB 60 1G
 ```
 
 
-##Credits
+## Credits
 Inspired by description of FakeFlashTest tool found here: http://www.rmprepusb.com/tutorials/-fake-usb-flash-memory-drives
